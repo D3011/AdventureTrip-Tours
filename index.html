@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Adventure Trip — Tours & Travel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Open+Sans:wght@300;400;500;600;700&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --yellow: #FFD700;
+      --yellow-dark: #E6C200;
+      --black: #000000;
+      --dark: #1a1a1a;
+      --gray-dark: #333333;
+      --gray: #666666;
+      --gray-light: #999999;
+      --gray-pale: #f5f5f5;
+      --white: #FFFFFF;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Open Sans', Arial, sans-serif;
+      --font-script: 'Dancing Script', cursive;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--white);
+      color: var(--gray-dark);
+      overflow-x: hidden;
+    }
+    .topbar {
+      background: var(--black);
+      color: var(--white);
+      padding: 0.5rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+    }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .topbar-left a {
+      color: var(--white);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.3s;
+    }
+    .topbar-left a:hover { color: var(--yellow); }
+    .topbar-left svg { width: 14px; height: 14px; fill: var(--yellow); }
+    .topbar-center {
+      color: rgba(255,255,255,0.8);
+      letter-spacing: 0.04em;
+    }
+    .topbar-center a { color: var(--yellow); text-decoration: none; }
+    .topbar-right { display: flex; gap: 0.8rem; }
+    .topbar-right a {
+      color: var(--white);
+      text-decoration: none;
+      width: 28px; height: 28px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .topbar-right a:hover {
+      background: var(--yellow);
+      border-color: var(--yellow);
+      color: var(--black);
+    }
+    .topbar-right svg { width: 13px; height: 13px; fill: currentColor; }
+    .main-nav {
+      background: var(--white);
+      padding: 0 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.1rem;
+      padding: 0.8rem 0;
+    }
+    .nav-logo-box {
+      background: var(--yellow);
+      padding: 0.5rem 1rem;
+      border-radius: 3px;
+    }
+    .nav-logo-text {
+      font-family: var(--font-sans);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--black);
+      letter-spacing: -0.02em;
+      text-transform: lowercase;
+    }
+    .nav-logo-text sup {
+      font-size: 0.55rem;
+      vertical-align: super;
+      font-weight: 400;
+    }
+    .nav-logo-tagline {
+      font-size: 0.65rem;
+      color: var(--gray);
+      font-style: italic;
+      letter-spacing: 0.08em;
+      margin-top: 0.15rem;
+    }
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 0;
+    }
+    .nav-links li a {
+      display: block;
+      padding: 1.3rem 1.1rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-dark);
+      text-decoration: none;
+      transition: background 0.3s, color 0.3s;
+      border-bottom: 3px solid transparent;
+    }
+    .nav-links li a:hover,
+    .nav-links li a.active {
+      background: var(--yellow);
+      color: var(--black);
+      border-bottom-color: var(--black);
+    }
+    .nav-phone {
+      background: var(--yellow);
+      color: var(--black);
+      padding: 0.7rem 1.4rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-decoration: none;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background 0.3s;
+      letter-spacing: 0.02em;
+    }
+    .nav-phone:hover { background: var(--yellow-dark); }
+    .nav-phone svg { width: 16px; height: 16px; fill: var(--black); }
+    .hero {
+      position: relative;
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      background: linear-gradient(135deg, #1a3a5c 0%, #0d2137 40%, #1a4a3a 100%);
+    }
+    .hero-slideshow {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+    }
+    .hero-slide.active {
+      opacity: 1;
+    }
+    .hero-bg-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      padding: 2rem;
+    }
+    .hero-script {
+      font-family: var(--font-script);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      color: var(--yellow);
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+    }
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.15;
+      letter-spacing: 0.02em;
+      margin-bottom: 1.2rem;
+    }
+    .hero-desc {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.8;
+      max-width: 620px;
+      margin: 0 auto 2rem;
+      font-weight: 300;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-yellow {
+      background: var(--yellow);
+      color: var(--black);
+      padding: 0.9rem 2.4rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 3px;
+      transition: background 0.3s, transform 0.2s;
+      display: inline-block;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-yellow:hover { background: var(--yellow-dark); transform: translateY(-2px); }
+    .btn-outline-white {
+      border: 2px solid rgba(255,255,255,0.6);
+      color: var(--white);
+      padding: 0.85rem 2.4rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 3px;
+      transition: border-color 0.3s, background 0.3s, color 0.3s, transform 0.2s;
+      display: inline-block;
+    }
+    .btn-outline-white:hover { border-color: var(--yellow); background: var(--yellow); color: var(--black); transform: translateY(-2px); }
+    .section { padding: 5rem 3rem; }
+    .section-header { text-align: center; margin-bottom: 3rem; }
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 0.8rem;
+    }
+    .section-subtitle {
+      font-size: 0.95rem;
+      color: var(--gray);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .section-line {
+      width: 50px;
+      height: 3px;
+      background: var(--yellow);
+      margin: 1rem auto 0;
+      border-radius: 2px;
+    }
+    .packages-section { background: var(--gray-pale); }
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.8rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .pkg-card {
+      background: var(--white);
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .pkg-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    }
+    .pkg-img-placeholder {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, #e8e0d0 0%, #d4cbbf 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pkg-img-placeholder svg { opacity: 0.35; }
+    .pkg-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+    }
+    .pkg-body { padding: 1.5rem; }
+    .pkg-tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--yellow-dark);
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .pkg-name {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 0.6rem;
+    }
+    .pkg-desc {
+      font-size: 0.85rem;
+      color: var(--gray);
+      line-height: 1.7;
+      margin-bottom: 1.2rem;
+    }
+    .pkg-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid #eee;
+      padding-top: 1rem;
+    }
+    .pkg-price {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--black);
+    }
+    .pkg-price span {
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      color: var(--gray-light);
+      font-weight: 400;
+    }
+    .pkg-link {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--black);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 0.4rem 1rem;
+      background: var(--yellow);
+      border-radius: 3px;
+      transition: background 0.3s;
+    }
+    .pkg-link:hover { background: var(--yellow-dark); }
+    .stats-section {
+      background: var(--white);
+      padding: 4rem 3rem;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .stat-icon {
+      width: 70px;
+      height: 70px;
+      background: var(--yellow);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.2rem;
+    }
+    .stat-icon svg { width: 32px; height: 32px; fill: var(--black); }
+    .stat-number {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 0.3rem;
+    }
+    .stat-text {
+      font-size: 0.85rem;
+      color: var(--gray);
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    .stat-desc {
+      font-size: 0.8rem;
+      color: var(--gray-light);
+      line-height: 1.6;
+      max-width: 260px;
+    }
+    .about-section { background: var(--gray-pale); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .about-img-wrap {
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+    .about-img-wrap img {
+      width: 100%;
+      height: 450px;
+      object-fit: cover;
+      display: block;
+      border-radius: 6px;
+    }
+    .about-text h2 {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 0.5rem;
+    }
+    .about-text .about-line {
+      width: 50px;
+      height: 3px;
+      background: var(--yellow);
+      margin: 1rem 0 1.5rem;
+      border-radius: 2px;
+    }
+    .about-text p {
+      font-size: 0.92rem;
+      color: var(--gray);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+    footer {
+      background: var(--black);
+      color: var(--white);
+      padding: 3rem 3rem 1.5rem;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .footer-brand .footer-logo-box {
+      background: var(--yellow);
+      display: inline-block;
+      padding: 0.4rem 0.9rem;
+      border-radius: 3px;
+      margin-bottom: 0.6rem;
+    }
+    .footer-brand .footer-logo-text {
+      font-family: var(--font-sans);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--black);
+    }
+    .footer-brand .footer-tagline {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.5);
+      font-style: italic;
+      margin-top: 0.5rem;
+      line-height: 1.5;
+    }
+    .footer-col h4 {
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 1.2rem;
+      font-weight: 600;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.7rem; }
+    .footer-col ul li a {
+      color: rgba(255,255,255,0.65);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.3s;
+    }
+    .footer-col ul li a:hover { color: var(--yellow); }
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 1.5rem auto 0;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.45);
+    }
+    .footer-bottom-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+    .footer-bottom-links a {
+      color: rgba(255,255,255,0.45);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .footer-bottom-links a:hover { color: var(--yellow); }
+    @media (max-width: 1024px) {
+      .topbar { padding: 0.5rem 1.5rem; }
+      .main-nav { padding: 0 1.5rem; flex-wrap: wrap; }
+      .nav-links { display: none; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .topbar-center { display: none; }
+      .hero { min-height: 70vh; }
+      .section { padding: 3rem 1.5rem; }
+      .packages-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 0.8rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <a href="tel:9655809977"><svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.72 11.72 0 003.66.59 1 1 0 011 1v3.59a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.59a1 1 0 011 1 11.72 11.72 0 00.59 3.66 1 1 0 01-.24 1.01l-2.2 2.2z"/></svg>96558 09977</a>
+    <a href="mailto:adventuretrip@gmail.com"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>adventuretrip@gmail.com</a>
+  </div>
+  <div class="topbar-center">Tours &amp; Travel &mdash; <a href="#packages">View Packages</a></div>
+  <div class="topbar-right">
+    <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+    <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5"/></svg></a>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="main-nav">
+  <div class="nav-logo"><div><div class="nav-logo-box"><span class="nav-logo-text">adventure trip<sup>TM</sup></span></div><div class="nav-logo-tagline">travel, world class</div></div></div>
+  <ul class="nav-links">
+    <li><a href="#hero" class="active">Home</a></li>
+    <li><a href="#packages">Packages</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <a href="tel:9655809977" class="nav-phone"><svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.72 11.72 0 003.66.59 1 1 0 011 1v3.59a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.59a1 1 0 011 1 11.72 11.72 0 00.59 3.66 1 1 0 01-.24 1.01l-2.2 2.2z"/></svg>+91 96558 09977</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-slideshow">
+    <div class="hero-slide" style="background-image: url('kerala.jpg')"></div>
+    <div class="hero-slide" style="background-image: url('kerala2.jpg')"></div>
+    <div class="hero-slide" style="background-image: url('varkala beach.jpg')"></div>
+    <div class="hero-slide" style="background-image: url('falls.jpg')"></div>
+    <div class="hero-slide" style="background-image: url('mysore.jpg')"></div>
+  </div>
+  <div class="hero-bg-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-script">extraordinary</p>
+    <h1 class="hero-title">Journey Beyond<br/>the Ordinary</h1>
+    <p class="hero-desc">Once a year, go somewhere you've never been before. Discover it with Adventure Trip &mdash; crafting journeys that stay with you long after you return home.</p>
+    <div class="hero-btns">
+      <a href="#packages" class="btn-yellow">Explore Packages</a>
+      <a href="#contact" class="btn-outline-white">Plan My Journey</a>
+    </div>
+  </div>
+</section>
+
+<!-- POPULAR PACKAGES TEASER -->
+<div class="section packages-section" id="packages">
+  <div class="section-header">
+    <h2 class="section-title">Popular Packages</h2>
+    <div class="section-line"></div>
+    <p class="section-subtitle">Carefully designed itineraries for pilgrimages, leisure, corporate retreats, and family holidays.</p>
+  </div>
+  <div class="packages-grid">
+    <div class="pkg-card">
+      <img src="clgimg.jpg" alt="College IV Tour" class="pkg-img"/>
+      <div class="pkg-body">
+        <p class="pkg-tag">Students</p>
+        <h3 class="pkg-name">College IV Tour</h3>
+        <p class="pkg-desc">Unforgettable industrial visit and leisure tours designed for college groups &mdash; safe, fun, and perfectly organized.</p>
+        <div class="pkg-footer"><div class="pkg-price">On Request</div><a href="#contact" class="pkg-link">Enquire</a></div>
+      </div>
+    </div>
+    <div class="pkg-card">
+      <img src="cor.jpg" alt="Company Tour" class="pkg-img"/>
+      <div class="pkg-body">
+        <p class="pkg-tag">Corporate</p>
+        <h3 class="pkg-name">Company Tour</h3>
+        <p class="pkg-desc">Premium corporate travel experiences &mdash; team outings, offsite retreats, and reward trips planned with professionalism.</p>
+        <div class="pkg-footer"><div class="pkg-price">On Request</div><a href="#contact" class="pkg-link">Enquire</a></div>
+      </div>
+    </div>
+    <div class="pkg-card">
+      <img src="fam.jpg" alt="Family Tour" class="pkg-img"/>
+      <div class="pkg-body">
+        <p class="pkg-tag">Family</p>
+        <h3 class="pkg-name">Family Tour</h3>
+        <p class="pkg-desc">Thoughtfully curated family holidays with comfortable travel, kid-friendly stops, and experiences for every generation.</p>
+        <div class="pkg-footer"><div class="pkg-price">On Request</div><a href="#contact" class="pkg-link">Enquire</a></div>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:2.5rem;">
+    <a href="#contact" class="btn-yellow">View All Packages</a>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-section">
+  <div class="stats-grid">
+    <div class="stat-item">
+      <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1a2 2 0 002 2v1.93zm6.93-2.54A2 2 0 0016 16h-1v-3a1 1 0 00-1-1H8v-2h2a1 1 0 001-1V7h2a2 2 0 002-2v-.41A8 8 0 0120 12c0 2.08-.8 3.97-2.1 5.39z"/></svg></div>
+      <div class="stat-number">50+</div>
+      <div class="stat-text">Destinations</div>
+      <p class="stat-desc">Tours to over 50 destinations across India and beyond.</p>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg></div>
+      <div class="stat-number">1200+</div>
+      <div class="stat-text">Happy Travellers</div>
+      <p class="stat-desc">Great customer satisfaction with all customers retained.</p>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
+      <div class="stat-number">100%</div>
+      <div class="stat-text">Curated Journeys</div>
+      <p class="stat-desc">Each itinerary customized to the taste of our customers.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT TEASER -->
+<div class="section about-section" id="about">
+  <div class="about-grid">
+    <div class="about-img-wrap">
+      <img src="kerala.jpg" alt="Travel experience"/>
+    </div>
+    <div class="about-text">
+      <h2>Welcome to Adventure Trip</h2>
+      <div class="about-line"></div>
+      <p>Adventure Trip has been turning travel dreams into unforgettable realities. From pilgrimage circuits to leisure escapes, we handle every detail &mdash; so you simply arrive, experience, and cherish.</p>
+      <p>Planning a once in a lifetime holiday or a yearly corporate retreat? No problem! We can get you what you want and in minimal time.</p>
+      <a href="#contact" class="btn-yellow" style="margin-top:1.2rem;">Learn More About Us</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo-box"><span class="footer-logo-text">adventure trip<sup style="font-size:.5rem">TM</sup></span></div>
+      <p class="footer-tagline">Once a year, go somewhere you've never been before. Adventure Trip crafts journeys that stay with you.</p>
+    </div>
+    <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="#hero">Home</a></li><li><a href="#packages">Packages</a></li><li><a href="#about">About Us</a></li></ul></div>
+    <div class="footer-col"><h4>Packages</h4><ul><li><a href="#packages">College IV Tour</a></li><li><a href="#packages">Company Tour</a></li><li><a href="#packages">Family Tour</a></li></ul></div>
+    <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:9655809977">96558 09977</a></li><li><a href="mailto:adventuretrip@gmail.com">adventuretrip@gmail.com</a></li><li><a href="#">122, VM Complex, Perundurai</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Adventure Trip. All rights reserved.</p>
+    <ul class="footer-bottom-links"><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li></ul>
+  </div>
+</footer>
+
+<script>
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Hero slideshow
+  (function() {
+    const slides = document.querySelectorAll('.hero-slide');
+    if (slides.length === 0) return;
+
+    let current = 0;
+    slides[current].classList.add('active');
+
+    setInterval(function() {
+      slides[current].classList.remove('active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('active');
+    }, 4000);
+  })();
+</script>
+
+</body>
+</html>
