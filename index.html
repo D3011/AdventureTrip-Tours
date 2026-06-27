@@ -756,30 +756,42 @@
     </div>
     <div style="background:white;padding:2.5rem;border-radius:6px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
       <h3 style="font-family:var(--font-serif);font-size:1.5rem;color:var(--black);margin-bottom:1.5rem;">Send us a Message</h3>
-      <form action="#" method="POST">
+      <form id="contactForm" onsubmit="sendToWhatsApp(event)">
         <div style="margin-bottom:1rem;">
-          <input type="text" name="name" placeholder="Your Name" required style="width:100%;padding:0.75rem;border:1px solid #ddd;border-radius:4px;font-family:var(--font-sans);font-size:0.95rem;"/>
+          <input type="text" id="fname" name="name" placeholder="Your Name" required style="width:100%;padding:0.75rem;border:1px solid #ddd;border-radius:4px;font-family:var(--font-sans);font-size:0.95rem;"/>
         </div>
         <div style="margin-bottom:1rem;">
-          <input type="email" name="email" placeholder="Your Email" required style="width:100%;padding:0.75rem;border:1px solid #ddd;border-radius:4px;font-family:var(--font-sans);font-size:0.95rem;"/>
+          <input type="email" id="femail" name="email" placeholder="Your Email" required style="width:100%;padding:0.75rem;border:1px solid #ddd;border-radius:4px;font-family:var(--font-sans);font-size:0.95rem;"/>
         </div>
         <div style="margin-bottom:1rem;">
-          <input type="tel" name="phone" placeholder="Your Phone" style="width:100%;padding:0.75rem;border:1px solid #ddd;border-radius:4px;font-family:var(--font-sans);font-size:0.95rem;"/>
+          <input type="tel" id="fphone" name="phone" placeholder="Your Phone" style="width:100%;padding:0.75rem;border:1px solid #ddd;border-radius:4px;font-family:var(--font-sans);font-size:0.95rem;"/>
         </div>
         <div style="margin-bottom:1rem;">
-          <select name="package" style="width:100%;padding:0.75rem;border:1px solid #ddd;border-radius:4px;font-family:var(--font-sans);font-size:0.95rem;">
+          <select id="fpackage" name="package" style="width:100%;padding:0.75rem;border:1px solid #ddd;border-radius:4px;font-family:var(--font-sans);font-size:0.95rem;">
             <option value="">Select Package Interest</option>
-            <option value="college">College IV Tour</option>
-            <option value="company">Company Tour</option>
-            <option value="family">Family Tour</option>
-            <option value="other">Other</option>
+            <option value="College IV Tour">College IV Tour</option>
+            <option value="Company Tour">Company Tour</option>
+            <option value="Family Tour">Family Tour</option>
+            <option value="Other">Other</option>
           </select>
         </div>
         <div style="margin-bottom:1.5rem;">
-          <textarea name="message" placeholder="Your Message" rows="4" required style="width:100%;padding:0.75rem;border:1px solid #ddd;border-radius:4px;font-family:var(--font-sans);font-size:0.95rem;resize:vertical;"></textarea>
+          <textarea id="fmessage" name="message" placeholder="Your Message" rows="4" required style="width:100%;padding:0.75rem;border:1px solid #ddd;border-radius:4px;font-family:var(--font-sans);font-size:0.95rem;resize:vertical;"></textarea>
         </div>
         <button type="submit" style="width:100%;padding:0.9rem;background:var(--yellow);color:var(--black);border:none;border-radius:4px;font-weight:700;font-size:1rem;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;">Send Message</button>
       </form>
+      <script>
+        function sendToWhatsApp(e) {
+          e.preventDefault();
+          const name    = document.getElementById('fname').value.trim();
+          const email   = document.getElementById('femail').value.trim();
+          const phone   = document.getElementById('fphone').value.trim();
+          const pkg     = document.getElementById('fpackage').value;
+          const message = document.getElementById('fmessage').value.trim();
+          const text = `*New Enquiry – Adventure Trip*\n\n*Name:* ${name}\n*Email:* ${email}\n*Phone:* ${phone || 'Not provided'}\n*Package:* ${pkg || 'Not selected'}\n*Message:* ${message}`;
+          window.open('https://wa.me/919655809977?text=' + encodeURIComponent(text), '_blank');
+        }
+      </script>
     </div>
   </div>
 </div>
